@@ -1,7 +1,8 @@
-import { Injectable, Inject, HttpException, ConflictException } from '@nestjs/common';
+import { Injectable, Inject, ConflictException } from '@nestjs/common';
+import * as bcrypt from 'bcrypt';
 import { Model } from 'mongoose';
 import { User } from './entity/user.interface';
-import { BaseUser } from './entity/dto/base-user.dto';
+import { CreateUserDto } from './entity/dto/create-user.dto';
 
 @Injectable()
 export class UsersService {
@@ -11,7 +12,8 @@ export class UsersService {
     return await this.userModel.findOne({ email: email }).exec();
   }
 
-  async create(userDto: BaseUser): Promise<User> | undefined {
+  async create(userDto: CreateUserDto): Promise<User> | undefined {
+    userDto.password = await bcrypt.hash(userDto.password, 10);
     const createdUser = new this.userModel(userDto);
     try {
       return await createdUser.save();
