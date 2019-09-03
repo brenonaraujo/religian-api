@@ -9,7 +9,6 @@ import { DatabaseModule } from './configuration/database/database.module';
 
 @Module({
   imports: [ApostlesModule, TeachingsModule, AuthModule, UsersModule, DatabaseModule],
-  controllers: [ TeachingsController, ApostlesController],
   providers: [],
 })
 export class AppModule {}
